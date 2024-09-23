@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.camera.extensions)
     implementation(libs.androidx.camera.view)
 
+    //DEFAULT
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
