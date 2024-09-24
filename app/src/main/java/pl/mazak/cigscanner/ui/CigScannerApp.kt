@@ -19,7 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -34,7 +38,17 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import pl.mazak.cigscanner.ui.navigation.CigScannerNavHost
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @Composable
@@ -65,14 +79,6 @@ fun CameraPreview() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
-    DisposableEffect(lifecycleOwner) {
-        val lifecycleObserver = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) {
-                // Zatrzymaj analizę obrazu po wyjściu z ekranu
-                Log.i("XD", "XD")
-            }
-        }
-    }
 
     ActivityCompat.requestPermissions(
         context as Activity,
@@ -89,7 +95,7 @@ fun CameraPreview() {
                             bindPreview(
                                 cameraProvider,
                                 lifecycleOwner,
-                                this
+                                this,
                             )
                         }, ContextCompat.getMainExecutor(context))
                     }
@@ -107,7 +113,13 @@ fun CameraPreview() {
             )
         }
     }
-
+//    DisposableEffect(Unit) {
+//        onDispose {
+//            val cameraProvider = cameraProviderFuture.get()
+//            cameraProvider.unbindAll() // Zatrzymanie kamery
+//            Log.i("X", "XDXXXXDSD")
+//        }
+//    }
 }
 
 fun bindPreview(
@@ -132,15 +144,34 @@ fun bindPreview(
 
 
     preview.surfaceProvider = (previewView.surfaceProvider)
-
     cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, preview, imageAnalysis)
 }
 
 @OptIn(ExperimentalGetImage::class)
 @Synchronized
 fun analyzeImage(image: ImageProxy) {
-    while (true) {
-        Log.i("XDD", "KURA")
-        Thread.sleep(1000)
+    val options = BarcodeScannerOptions.Builder()
+        .setBarcodeFormats(
+            Barcode.FORMAT_EAN_8,
+            Barcode.FORMAT_EAN_13)
+        .build()
+
+    val client = BarcodeScanning.getClient(options)
+    val image1 = image.image
+
+    if (image1 != null) {
+        val process = client.process(
+            InputImage.fromMediaImage(image1, image.imageInfo.rotationDegrees)
+        ).addOnSuccessListener { barcodes ->
+            barcodes.forEach{barcode ->
+                run {
+                    barcode.rawValue?.let { Log.i("XXXX", "ZESKANOWANY KOD: $it") }
+                }
+            }
+        }
     }
+
+
+    Thread.sleep(1000)
+    image.close()
 }
