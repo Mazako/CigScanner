@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import pl.mazak.cigscanner.R
 import pl.mazak.cigscanner.ui.CameraPreview
 import pl.mazak.cigscanner.ui.mainMenu.MainMenu
+import pl.mazak.cigscanner.ui.products.ProductPanel
+import pl.mazak.cigscanner.ui.products.ProductsList
 
 @Composable
 fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -24,10 +26,20 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
         composable(route = Routes.Camera.name) {
             CameraPreview()
         }
+
+        composable(route = Routes.Products.name) {
+            ProductsList()
+        }
+
+        composable(route = Routes.AddProduct.name) {
+            ProductPanel()
+        }
     }
 }
 
 enum class Routes(@StringRes val title: Int) {
     MainMenu(R.string.main_menu_title),
-    Camera(R.string.camera_menu_title)
+    Camera(R.string.camera_menu_title),
+    Products(R.string.products_menu_title),
+    AddProduct(R.string.add_product_menu_title)
 }
