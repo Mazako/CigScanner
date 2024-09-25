@@ -1,5 +1,6 @@
 package pl.mazak.cigscanner.ui.products
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -34,6 +35,7 @@ import pl.mazak.cigscanner.ui.navigation.Routes
 
 @Composable
 fun ProductsList(
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -46,12 +48,12 @@ fun ProductsList(
                     start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
                     top = innerPadding.calculateTopPadding(),
                     end = innerPadding.calculateEndPadding(LocalLayoutDirection.current),
-                    bottom = 16.dp
+                    bottom = innerPadding.calculateBottomPadding()
                 )
                 .fillMaxSize()
         ) {
             Column(
-                modifier = Modifier.weight(0.95f)
+                modifier = Modifier.weight(0.9f)
             ) {
                 ProductEntry(
                     name = "Marlboro Gold",
@@ -62,15 +64,16 @@ fun ProductsList(
 
             Column(
                 modifier = Modifier
-                    .weight(0.05f)
+                    .weight(0.1f)
                     .fillMaxWidth()
-                    .fillMaxHeight()
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Bottom
             ) {
                 Row(
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = onAddClick,
                         modifier = Modifier.weight(0.8f)
                     ) {
                         Text(text = "Dodaj produkt")
@@ -147,5 +150,5 @@ fun ProductEntry(
 @Preview
 @Composable
 fun ProductsListPreview() {
-    ProductsList()
+    ProductsList({})
 }

@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "products")
 data class Product(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
     val code: String,
-    val plnPrice: Float
+    val plnPrice: Double
 )

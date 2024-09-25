@@ -16,12 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import pl.mazak.cigscanner.ui.CigScannerTopBar
 import pl.mazak.cigscanner.ui.navigation.Routes
 
 
 @Composable
-fun MainMenu(onCameraClick: () -> Unit, modifier: Modifier = Modifier) {
+fun MainMenu(
+    onCameraClick: () -> Unit,
+    onProductsClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     Scaffold(
         modifier = modifier,
@@ -38,6 +43,7 @@ fun MainMenu(onCameraClick: () -> Unit, modifier: Modifier = Modifier) {
                 .fillMaxSize()
         ) {
             MenuEntry("Aparat", onCameraClick)
+            MenuEntry("Produkty", onProductsClick)
         }
     }
 }
@@ -51,4 +57,10 @@ fun MenuEntry(title: String, onClick: () -> Unit, modifier: Modifier = Modifier)
     ) {
         Text(title)
     }
+}
+
+@Composable
+@Preview
+fun MainMenuComposable() {
+    MainMenu({}, {})
 }

@@ -20,7 +20,10 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
         modifier = modifier
     ) {
         composable(route = Routes.MainMenu.name) {
-            MainMenu(onCameraClick = { navController.navigate(Routes.Camera.name) })
+            MainMenu(
+                onCameraClick = { navController.navigate(Routes.Camera.name) },
+                onProductsClick = {navController.navigate(Routes.Products.name)}
+            )
         }
 
         composable(route = Routes.Camera.name) {
@@ -28,11 +31,15 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
         }
 
         composable(route = Routes.Products.name) {
-            ProductsList()
+            ProductsList(
+                onAddClick = { navController.navigate(Routes.AddProduct.name) }
+            )
         }
 
         composable(route = Routes.AddProduct.name) {
-            ProductPanel()
+            ProductPanel(
+                backCallback = {navController.popBackStack()}
+            )
         }
     }
 }
