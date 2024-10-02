@@ -53,6 +53,7 @@ fun AddProductPanel(
 @Composable
 @Preview
 fun ProductPanelPreview() {
+    AddProductPanel(backCallback = {})
 }
 
 
