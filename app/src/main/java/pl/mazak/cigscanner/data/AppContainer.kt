@@ -1,7 +1,6 @@
 package pl.mazak.cigscanner.data
 
 import android.content.Context
-import androidx.core.os.persistableBundleOf
 
 interface AppContainer {
     val productsRepository: ProductsRepository

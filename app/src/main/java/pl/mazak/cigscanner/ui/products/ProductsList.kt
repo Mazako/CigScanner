@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -21,26 +23,39 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import pl.mazak.cigscanner.R
+import pl.mazak.cigscanner.ui.AppViewModelProvider
 import pl.mazak.cigscanner.ui.CigScannerTopBar
-import pl.mazak.cigscanner.ui.navigation.Routes
+import pl.mazak.cigscanner.ui.navigation.BasicRoute
+
+object ProductsListRoute : BasicRoute {
+    override val route: String = "product"
+    override val titleRes: Int = R.string.products_menu_title
+}
 
 @Composable
 fun ProductsList(
     onAddClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProductsListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val itemsState = viewModel.products.collectAsState()
     Scaffold(
         modifier = modifier,
-        topBar = { CigScannerTopBar(stringResource(Routes.Products.title)) }
+        topBar = { CigScannerTopBar(stringResource(ProductsListRoute.titleRes)) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -52,14 +67,27 @@ fun ProductsList(
                 )
                 .fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier.weight(0.9f)
-            ) {
-                ProductEntry(
-                    name = "Marlboro Gold",
-                    code = "1111222333",
-                    price = 13.23
+            if (itemsState.value.isEmpty()) {
+                Text(
+                    "Lista jest pusta",
+                    modifier = Modifier.padding(16.dp)
                 )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.weight(0.9f)
+                ) {
+                    items(itemsState.value) {
+                        ProductEntry(
+                            id = it.id.toString(),
+                            name = it.name,
+                            code = it.code,
+                            price = it.price,
+                            viewModel = viewModel
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+
             }
 
             Column(
@@ -98,11 +126,14 @@ fun ProductsList(
 
 @Composable
 fun ProductEntry(
+    id: String,
     name: String,
     code: String,
-    price: Double,
+    price: String,
+    viewModel: ProductsListViewModel,
     modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope()
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -118,7 +149,7 @@ fun ProductEntry(
             Column(
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             ) {
-                Text(text = name)
+                Text(text = name, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.weight(1f))
                 Text(text = code)
             }
@@ -134,7 +165,11 @@ fun ProductEntry(
                 Icon(imageVector = Icons.Default.Edit, contentDescription = null)
             }
             Button(
-                onClick = {},
+                onClick = {
+                    coroutineScope.launch {
+                        viewModel.removeProduct(id.toInt())
+                    }
+                },
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Icon(

@@ -5,12 +5,19 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import pl.mazak.cigscanner.CigScannerApplication
-import pl.mazak.cigscanner.ui.products.ProductPanelViewModel
+import pl.mazak.cigscanner.ui.products.AddProductViewModel
+import pl.mazak.cigscanner.ui.products.ProductsListViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
-            ProductPanelViewModel(
+            AddProductViewModel(
+                cigScannerApplication().container.productsRepository
+            )
+        }
+
+        initializer {
+            ProductsListViewModel(
                 cigScannerApplication().container.productsRepository
             )
         }

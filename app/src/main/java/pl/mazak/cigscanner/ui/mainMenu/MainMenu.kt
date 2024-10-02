@@ -1,6 +1,5 @@
 package pl.mazak.cigscanner.ui.mainMenu
 
-import android.view.Menu
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -13,12 +12,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import pl.mazak.cigscanner.R
 import pl.mazak.cigscanner.ui.CigScannerTopBar
-import pl.mazak.cigscanner.ui.navigation.Routes
+import pl.mazak.cigscanner.ui.navigation.BasicRoute
+
+
+object MainMenuRoute: BasicRoute {
+    override val route: String = "MainMenu"
+    override val titleRes: Int = R.string.main_menu_title
+}
 
 
 @Composable
@@ -30,7 +35,7 @@ fun MainMenu(
 
     Scaffold(
         modifier = modifier,
-        topBar = { CigScannerTopBar(stringResource(Routes.MainMenu.title)) }
+        topBar = { CigScannerTopBar(stringResource(MainMenuRoute.titleRes)) }
     ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

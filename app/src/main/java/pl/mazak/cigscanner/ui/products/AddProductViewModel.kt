@@ -4,10 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import pl.mazak.cigscanner.data.Product
 import pl.mazak.cigscanner.data.ProductsRepository
 
-class ProductPanelViewModel(private val productsRepository: ProductsRepository): ViewModel() {
+class AddProductViewModel(private val productsRepository: ProductsRepository): ViewModel() {
 
     var productState by mutableStateOf(ProductUiState())
         private set
@@ -31,16 +30,3 @@ class ProductPanelViewModel(private val productsRepository: ProductsRepository):
 
 }
 
-data class ProductUiState(
-    val name: String = "",
-    val code: String = "",
-    val price: String = "",
-)
-
-fun ProductUiState.toProduct(): Product {
-    return Product(
-        name = this.name,
-        code = this.code,
-        plnPrice = this.price.toDouble()
-    )
-}

@@ -4,6 +4,7 @@
     <string name="camera_menu_title">Skaner</string>
     <string name="products_menu_title">Produkty</string>
     <string name="add_product_menu_title">Dodaj produkt</string>
+    <string name="edit_product_menu_title">Edytuj produkt</string>
 
     <string name="camera_menu_entry">Aparat</string>
 </resources>
