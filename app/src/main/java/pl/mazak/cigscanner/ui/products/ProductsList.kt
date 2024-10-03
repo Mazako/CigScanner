@@ -49,6 +49,7 @@ object ProductsListRoute : BasicRoute {
 @Composable
 fun ProductsList(
     onAddClick: () -> Unit,
+    onEditClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProductsListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -82,6 +83,7 @@ fun ProductsList(
                             name = it.name,
                             code = it.code,
                             price = it.price,
+                            onEditClick = onEditClick,
                             viewModel = viewModel
                         )
                         Spacer(modifier = Modifier.height(10.dp))
@@ -130,6 +132,7 @@ fun ProductEntry(
     name: String,
     code: String,
     price: String,
+    onEditClick: (String) -> Unit,
     viewModel: ProductsListViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -159,7 +162,7 @@ fun ProductEntry(
                 Modifier.padding(end = 16.dp)
             )
             Button(
-                onClick = {},
+                onClick = { onEditClick(id) },
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Icon(imageVector = Icons.Default.Edit, contentDescription = null)
@@ -185,5 +188,5 @@ fun ProductEntry(
 @Preview
 @Composable
 fun ProductsListPreview() {
-    ProductsList({})
+    ProductsList({}, {})
 }

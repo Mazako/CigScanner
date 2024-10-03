@@ -13,14 +13,14 @@ class EditProductViewModel(
     savedStateHandle: SavedStateHandle,
     private val productsRepository: ProductsRepository,
 ): ViewModel() {
-    private val id: Int = checkNotNull(savedStateHandle[EditProductRoute.productIdArg])
+    private val id: String = checkNotNull(savedStateHandle[EditProductRoute.productIdArg])
 
     private val _productState = MutableStateFlow(ProductUiState())
     val productUiState = _productState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _productState.value = productsRepository.getProductById(id).last().toUiState()
+            _productState.value = productsRepository.getProductById(id.toInt()).last().toUiState()
         }
     }
 
