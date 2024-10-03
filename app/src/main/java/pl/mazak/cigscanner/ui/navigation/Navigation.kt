@@ -38,7 +38,7 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
         composable(route = ProductsListRoute.route) {
             ProductsList(
                 onAddClick = { navController.navigate(AddProductRoute.route) },
-                onEditClick = {navController.navigate("${EditProductRoute.route}/{$it}")}
+                onEditClick = {navController.navigate("${EditProductRoute.route}/$it")}
             )
         }
 

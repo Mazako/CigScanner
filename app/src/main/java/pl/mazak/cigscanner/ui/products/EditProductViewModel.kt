@@ -1,11 +1,12 @@
 package pl.mazak.cigscanner.ui.products
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import pl.mazak.cigscanner.data.ProductsRepository
 
@@ -13,14 +14,14 @@ class EditProductViewModel(
     savedStateHandle: SavedStateHandle,
     private val productsRepository: ProductsRepository,
 ): ViewModel() {
-    private val id: String = checkNotNull(savedStateHandle[EditProductRoute.productIdArg])
+    private val id: Int = checkNotNull(savedStateHandle[EditProductRoute.productIdArg])
 
     private val _productState = MutableStateFlow(ProductUiState())
     val productUiState = _productState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _productState.value = productsRepository.getProductById(id.toInt()).last().toUiState()
+            _productState.value = productsRepository.getProductById(id).first().toUiState()
         }
     }
 
