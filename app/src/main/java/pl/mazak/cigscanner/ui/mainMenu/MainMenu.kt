@@ -28,8 +28,8 @@ object MainMenuRoute: BasicRoute {
 
 @Composable
 fun MainMenu(
-    onCameraClick: () -> Unit,
     onProductsClick: () -> Unit,
+    onCurrencyClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -47,8 +47,8 @@ fun MainMenu(
                 )
                 .fillMaxSize()
         ) {
-            MenuEntry("Aparat", onCameraClick)
             MenuEntry("Produkty", onProductsClick)
+            MenuEntry("Kursy walut", onCurrencyClick)
         }
     }
 }

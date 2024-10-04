@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 class CurrencyOfflineRepository(private val currencyDao: CurrencyDao): CurrencyRepository {
     override fun getCurrency(): Flow<Currency?> = currencyDao.getCurrency()
     override suspend fun updateCurrency(currency: Currency) = currencyDao.update(currency)
+    override suspend fun insertCurrency(currency: Currency) = currencyDao.insert(currency)
 }

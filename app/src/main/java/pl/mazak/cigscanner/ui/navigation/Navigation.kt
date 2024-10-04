@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import pl.mazak.cigscanner.ui.camera.CameraBarcodeReader
 import pl.mazak.cigscanner.ui.camera.CameraBarcodeReaderRoute
+import pl.mazak.cigscanner.ui.currency.CurrencyPanel
+import pl.mazak.cigscanner.ui.currency.CurrencyPanelRoute
 import pl.mazak.cigscanner.ui.mainMenu.MainMenu
 import pl.mazak.cigscanner.ui.mainMenu.MainMenuRoute
 import pl.mazak.cigscanner.ui.products.add.AddProductCodeSingleton
@@ -29,8 +31,8 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
     ) {
         composable(route = MainMenuRoute.route) {
             MainMenu(
-                onCameraClick = { navController.navigate("cam") },
-                onProductsClick = { navController.navigate(ProductsListRoute.route) }
+                onProductsClick = { navController.navigate(ProductsListRoute.route) },
+                onCurrencyClick = { navController.navigate(CurrencyPanelRoute.route) }
             )
         }
 
@@ -99,6 +101,14 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
             EditProductPanel(
                 backCallback = { navController.popBackStack() },
                 onCameraClick = { navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${EditProductRoute.route}") }
+            )
+        }
+
+        composable(
+            route = CurrencyPanelRoute.route
+        ) {
+            CurrencyPanel(
+                backCallback = { navController.popBackStack() }
             )
         }
     }

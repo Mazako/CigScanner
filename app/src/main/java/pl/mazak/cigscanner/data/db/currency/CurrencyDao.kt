@@ -1,6 +1,7 @@
 package pl.mazak.cigscanner.data.db.currency
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -13,4 +14,7 @@ interface CurrencyDao {
 
     @Update
     suspend fun update(currency: Currency)
+
+    @Insert
+    suspend fun insert(currency: Currency)
 }
