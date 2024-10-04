@@ -31,6 +31,7 @@ object MainMenuRoute: BasicRoute {
 fun MainMenu(
     onProductsClick: () -> Unit,
     onCurrencyClick: () -> Unit,
+    onScannerClick: () -> Unit,
     modifier: Modifier = Modifier,
     canNavigateBack: Boolean = false
 ) {
@@ -39,7 +40,7 @@ fun MainMenu(
         modifier = modifier,
         topBar = {
             CigScannerTopBar(
-                title = stringResource(AddProductRoute.titleRes),
+                title = stringResource(MainMenuRoute.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = { },
             )
@@ -57,6 +58,7 @@ fun MainMenu(
         ) {
             MenuEntry("Produkty", onProductsClick)
             MenuEntry("Kursy walut", onCurrencyClick)
+            MenuEntry("Skaner", onScannerClick)
         }
     }
 }
@@ -75,5 +77,5 @@ fun MenuEntry(title: String, onClick: () -> Unit, modifier: Modifier = Modifier)
 @Composable
 @Preview
 fun MainMenuComposable() {
-    MainMenu({}, {})
+    MainMenu({}, {}, {})
 }

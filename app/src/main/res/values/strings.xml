@@ -3,6 +3,7 @@
     <string name="main_menu_title">Menu Główne</string>
     <string name="camera_menu_title">Skaner</string>
     <string name="products_menu_title">Produkty</string>
+    <string name="search_menu_title">Wyszukiwanie</string>
     <string name="add_product_menu_title">Dodaj produkt</string>
     <string name="edit_product_menu_title">Edytuj produkt</string>
     <string name="course_menu_title">Kursy walut</string>

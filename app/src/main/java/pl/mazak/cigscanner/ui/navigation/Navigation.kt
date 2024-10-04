@@ -21,6 +21,8 @@ import pl.mazak.cigscanner.ui.products.edit.EditProductPanel
 import pl.mazak.cigscanner.ui.products.edit.EditProductRoute
 import pl.mazak.cigscanner.ui.products.list.ProductsList
 import pl.mazak.cigscanner.ui.products.list.ProductsListRoute
+import pl.mazak.cigscanner.ui.products.search.ProductSearchPanel
+import pl.mazak.cigscanner.ui.products.search.ProductSearchPanelRoute
 
 @Composable
 fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -32,7 +34,8 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
         composable(route = MainMenuRoute.route) {
             MainMenu(
                 onProductsClick = { navController.navigate(ProductsListRoute.route) },
-                onCurrencyClick = { navController.navigate(CurrencyPanelRoute.route) }
+                onCurrencyClick = { navController.navigate(CurrencyPanelRoute.route) },
+                onScannerClick = { navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${ProductSearchPanelRoute.route}") }
             )
         }
 
@@ -63,6 +66,12 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
                         EditProductRoute.route -> {
                             EditProductCodeSingleton.CODE = it
                             navController.popBackStack()
+                        }
+
+                        ProductSearchPanelRoute.route -> navController.navigate("${ProductSearchPanelRoute.route}/${it}") {
+                            popUpTo(CameraBarcodeReaderRoute.route) {
+                                inclusive = true
+                            }
                         }
 
                         else -> navController.popBackStack()
@@ -114,6 +123,23 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
         ) {
             CurrencyPanel(
                 backCallback = { navController.popBackStack() },
+                navigateUpCallback = { navController.navigateUp() }
+            )
+        }
+
+        composable(
+            route = ProductSearchPanelRoute.routeWithArgs,
+            arguments = listOf(
+                navArgument(ProductSearchPanelRoute.codeArg) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            ProductSearchPanel(
+                cameraCallback = {
+                    navController.popBackStack()
+                    navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${ProductSearchPanelRoute.route}")
+                },
                 navigateUpCallback = { navController.navigateUp() }
             )
         }

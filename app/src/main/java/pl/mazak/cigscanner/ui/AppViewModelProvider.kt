@@ -10,6 +10,7 @@ import pl.mazak.cigscanner.ui.currency.CurrencyPanelViewModel
 import pl.mazak.cigscanner.ui.products.add.AddProductViewModel
 import pl.mazak.cigscanner.ui.products.edit.EditProductViewModel
 import pl.mazak.cigscanner.ui.products.list.ProductsListViewModel
+import pl.mazak.cigscanner.ui.products.search.ProductSearchViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -36,6 +37,14 @@ object AppViewModelProvider {
         initializer {
             CurrencyPanelViewModel(
                 cigScannerApplication().container.currencyRepository
+            )
+        }
+
+        initializer {
+            ProductSearchViewModel(
+                savedStateHandle = this.createSavedStateHandle(),
+                currencyRepository = cigScannerApplication().container.currencyRepository,
+                productsRepository = cigScannerApplication().container.productsRepository
             )
         }
     }
