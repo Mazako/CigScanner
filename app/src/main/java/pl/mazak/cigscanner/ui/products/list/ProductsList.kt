@@ -51,13 +51,21 @@ fun ProductsList(
     onAddClick: () -> Unit,
     onEditClick: (String) -> Unit,
     onCameraClick: () -> Unit,
+    navigateUpCallback: () -> Unit,
+    canNavigateBack: Boolean = true,
     modifier: Modifier = Modifier,
     viewModel: ProductsListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val itemsState = viewModel.products.collectAsState()
     Scaffold(
         modifier = modifier,
-        topBar = { CigScannerTopBar(stringResource(ProductsListRoute.titleRes)) }
+        topBar = {
+            CigScannerTopBar(
+                title = stringResource(ProductsListRoute.titleRes),
+                canNavigateBack = canNavigateBack,
+                navigateUp = navigateUpCallback,
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -189,5 +197,5 @@ fun ProductEntry(
 @Preview
 @Composable
 fun ProductsListPreview() {
-    ProductsList({}, {}, {})
+    ProductsList({}, {}, {}, {})
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import pl.mazak.cigscanner.R
 import pl.mazak.cigscanner.ui.CigScannerTopBar
 import pl.mazak.cigscanner.ui.navigation.BasicRoute
+import pl.mazak.cigscanner.ui.products.add.AddProductRoute
 
 
 object MainMenuRoute: BasicRoute {
@@ -30,12 +31,19 @@ object MainMenuRoute: BasicRoute {
 fun MainMenu(
     onProductsClick: () -> Unit,
     onCurrencyClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    canNavigateBack: Boolean = false
 ) {
 
     Scaffold(
         modifier = modifier,
-        topBar = { CigScannerTopBar(stringResource(MainMenuRoute.titleRes)) }
+        topBar = {
+            CigScannerTopBar(
+                title = stringResource(AddProductRoute.titleRes),
+                canNavigateBack = canNavigateBack,
+                navigateUp = { },
+            )
+        }
     ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

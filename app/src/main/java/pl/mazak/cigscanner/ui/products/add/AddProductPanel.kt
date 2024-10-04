@@ -14,6 +14,7 @@ import pl.mazak.cigscanner.ui.AppViewModelProvider
 import pl.mazak.cigscanner.ui.CigScannerTopBar
 import pl.mazak.cigscanner.ui.navigation.BasicRoute
 import pl.mazak.cigscanner.ui.products.ProductPanel
+import pl.mazak.cigscanner.ui.products.edit.EditProductRoute
 
 object AddProductRoute : BasicRoute {
     override val route: String = "addProduct"
@@ -27,7 +28,9 @@ object AddProductRoute : BasicRoute {
 fun AddProductPanel(
     backCallback: () -> Unit,
     onCameraClick: () -> Unit,
+    navigateUpCallback: () -> Unit,
     modifier: Modifier = Modifier,
+    canNavigateBack: Boolean = true,
     viewModel: AddProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState = viewModel.productState
@@ -42,7 +45,13 @@ fun AddProductPanel(
 
     Scaffold(
         modifier = modifier,
-        topBar = { CigScannerTopBar(stringResource(AddProductRoute.titleRes)) }
+        topBar = {
+            CigScannerTopBar(
+                title = stringResource(AddProductRoute.titleRes),
+                canNavigateBack = canNavigateBack,
+                navigateUp = navigateUpCallback,
+            )
+        }
     ) { innerPadding ->
         ProductPanel(
             name = uiState.name,
@@ -67,7 +76,7 @@ fun AddProductPanel(
 @Composable
 @Preview
 fun ProductPanelPreview() {
-    AddProductPanel(backCallback = {}, {})
+    AddProductPanel(backCallback = {}, {}, {})
 }
 
 

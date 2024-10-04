@@ -54,10 +54,12 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
                             }
                             restoreState = true
                         }
+
                         AddProductRoute.selfCallback -> {
                             AddProductCodeSingleton.CODE = it
                             navController.popBackStack()
                         }
+
                         EditProductRoute.route -> {
                             EditProductCodeSingleton.CODE = it
                             navController.popBackStack()
@@ -73,7 +75,8 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
             ProductsList(
                 onAddClick = { navController.navigate(AddProductRoute.route) },
                 onEditClick = { navController.navigate("${EditProductRoute.route}/$it") },
-                onCameraClick = { navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${AddProductRoute.route}") }
+                onCameraClick = { navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${AddProductRoute.route}") },
+                navigateUpCallback = { navController.navigateUp() }
             )
         }
 
@@ -86,7 +89,8 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
         ) {
             AddProductPanel(
                 backCallback = { navController.popBackStack() },
-                onCameraClick =  { navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${AddProductRoute.selfCallback}") }
+                onCameraClick = { navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${AddProductRoute.selfCallback}") },
+                navigateUpCallback = { navController.navigateUp() }
             )
         }
 
@@ -100,7 +104,8 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
         ) {
             EditProductPanel(
                 backCallback = { navController.popBackStack() },
-                onCameraClick = { navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${EditProductRoute.route}") }
+                onCameraClick = { navController.navigate("${CameraBarcodeReaderRoute.route}?${CameraBarcodeReaderRoute.redirectParam}=${EditProductRoute.route}") },
+                navigateUpCallback = { navController.navigateUp() }
             )
         }
 
@@ -108,7 +113,8 @@ fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Mod
             route = CurrencyPanelRoute.route
         ) {
             CurrencyPanel(
-                backCallback = { navController.popBackStack() }
+                backCallback = { navController.popBackStack() },
+                navigateUpCallback = { navController.navigateUp() }
             )
         }
     }

@@ -42,14 +42,22 @@ object CurrencyPanelRoute : BasicRoute {
 @Composable
 fun CurrencyPanel(
     backCallback: () -> Unit,
+    navigateUpCallback: () -> Unit,
     modifier: Modifier = Modifier,
+    canNavigateBack: Boolean = true,
     viewModel: CurrencyPanelViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState = viewModel.currencyUiState
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         modifier = modifier,
-        topBar = { CigScannerTopBar(stringResource(CurrencyPanelRoute.titleRes)) }
+        topBar = {
+            CigScannerTopBar(
+                title = stringResource(CurrencyPanelRoute.titleRes),
+                canNavigateBack = canNavigateBack,
+                navigateUp = navigateUpCallback
+            )
+        }
     ) { innerPadding ->
         CurrencyColumn(
             eur = uiState.eur,
