@@ -3,14 +3,29 @@ package pl.mazak.cigscanner.ui.products
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import pl.mazak.cigscanner.data.ProductsRepository
 
-class AddProductViewModel(private val productsRepository: ProductsRepository): ViewModel() {
+object AddProductCodeSingleton {
+    var CODE: String? = null
+}
+
+class AddProductViewModel(
+    private val productsRepository: ProductsRepository,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
+    private val code: String? = savedStateHandle[AddProductRoute.codeArg]
 
     var productState by mutableStateOf(ProductUiState())
         private set
 
+
+    init {
+        code?.let {
+            productState = productState.copy(code = it)
+        }
+    }
 
     fun updateName(name: String) {
         productState = productState.copy(name = name)

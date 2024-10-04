@@ -40,6 +40,7 @@ fun ProductPanel(
     onPriceChange: (String) -> Unit,
     buttonName: String,
     onDone: () -> Unit,
+    onCameraClick: () -> Unit = {},
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -91,7 +92,7 @@ fun ProductPanel(
                 )
                 Spacer(Modifier.size(8.dp))
                 Button(
-                    onClick = {},
+                    onClick = onCameraClick,
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.outline_camera_alt_24),

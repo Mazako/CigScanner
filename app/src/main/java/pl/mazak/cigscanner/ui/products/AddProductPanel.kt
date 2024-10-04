@@ -1,9 +1,13 @@
 package pl.mazak.cigscanner.ui.products
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -15,18 +19,29 @@ import pl.mazak.cigscanner.ui.navigation.BasicRoute
 
 object AddProductRoute : BasicRoute {
     override val route: String = "addProduct"
+    const val codeArg: String = "code"
+    val routeWithArgs: String = "$route?$codeArg={$codeArg}"
     override val titleRes: Int = R.string.add_product_menu_title
+    val selfCallback: String = "addProductSELF"
 }
-
 
 @Composable
 fun AddProductPanel(
     backCallback: () -> Unit,
+    onCameraClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AddProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState = viewModel.productState
     val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        if (AddProductCodeSingleton.CODE != null) {
+            viewModel.updateCode(AddProductCodeSingleton.CODE!!)
+            AddProductCodeSingleton.CODE = null
+        }
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = { CigScannerTopBar(stringResource(AddProductRoute.titleRes)) }
@@ -45,6 +60,7 @@ fun AddProductPanel(
                 }
             },
             buttonName = "Dodaj",
+            onCameraClick = onCameraClick,
             innerPadding = innerPadding
         )
     }
@@ -53,7 +69,7 @@ fun AddProductPanel(
 @Composable
 @Preview
 fun ProductPanelPreview() {
-    AddProductPanel(backCallback = {})
+    AddProductPanel(backCallback = {}, {})
 }
 
 

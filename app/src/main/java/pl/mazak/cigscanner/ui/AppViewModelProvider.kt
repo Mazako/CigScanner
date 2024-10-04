@@ -14,7 +14,8 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             AddProductViewModel(
-                cigScannerApplication().container.productsRepository
+                cigScannerApplication().container.productsRepository,
+                this.createSavedStateHandle()
             )
         }
 

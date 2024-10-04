@@ -2,6 +2,7 @@ package pl.mazak.cigscanner.ui.products
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -23,11 +24,19 @@ object EditProductRoute : BasicRoute {
 @Composable
 fun EditProductPanel(
     backCallback: () -> Unit,
+    onCameraClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: EditProductViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState = viewModel.productUiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        if (EditProductCodeSingleton.CODE != null) {
+            viewModel.updateCode(EditProductCodeSingleton.CODE!!)
+            EditProductCodeSingleton.CODE = null
+        }
+    }
 
     Scaffold(
         modifier = modifier,
@@ -47,6 +56,7 @@ fun EditProductPanel(
                     backCallback()
                 }
             },
+            onCameraClick = onCameraClick,
             innerPadding = innerPadding
         )
     }

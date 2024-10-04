@@ -10,6 +10,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import pl.mazak.cigscanner.data.ProductsRepository
 
+object EditProductCodeSingleton{
+    var CODE: String? = null
+}
+
 class EditProductViewModel(
     savedStateHandle: SavedStateHandle,
     private val productsRepository: ProductsRepository,

@@ -50,6 +50,7 @@ object ProductsListRoute : BasicRoute {
 fun ProductsList(
     onAddClick: () -> Unit,
     onEditClick: (String) -> Unit,
+    onCameraClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProductsListViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -110,7 +111,7 @@ fun ProductsList(
                     }
 
                     Button(
-                        onClick = {},
+                        onClick = onCameraClick,
                         modifier = Modifier.weight(0.2f)
                     ) {
                         Icon(
@@ -188,5 +189,5 @@ fun ProductEntry(
 @Preview
 @Composable
 fun ProductsListPreview() {
-    ProductsList({}, {})
+    ProductsList({}, {}, {})
 }
