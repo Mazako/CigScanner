@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import pl.mazak.cigscanner.data.ProductsRepository
+import pl.mazak.cigscanner.data.db.product.ProductsRepository
 import pl.mazak.cigscanner.ui.products.ProductUiState
 
 object AddProductCodeSingleton {

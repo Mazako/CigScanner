@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import pl.mazak.cigscanner.data.ProductsRepository
+import pl.mazak.cigscanner.data.db.product.ProductsRepository
 import pl.mazak.cigscanner.ui.products.ProductUiState
 import pl.mazak.cigscanner.ui.products.toUiState
 

@@ -1,4 +1,4 @@
-package pl.mazak.cigscanner.data
+package pl.mazak.cigscanner.data.db.product
 
 import kotlinx.coroutines.flow.Flow
 

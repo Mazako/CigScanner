@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import pl.mazak.cigscanner.data.ProductsRepository
+import pl.mazak.cigscanner.data.db.product.ProductsRepository
 import pl.mazak.cigscanner.ui.products.ProductUiState
 import pl.mazak.cigscanner.ui.products.toUiState
 

@@ -1,6 +1,6 @@
 package pl.mazak.cigscanner.ui.products
 
-import pl.mazak.cigscanner.data.Product
+import pl.mazak.cigscanner.data.db.product.Product
 
 data class ProductUiState(
     val id: Int = 0,
