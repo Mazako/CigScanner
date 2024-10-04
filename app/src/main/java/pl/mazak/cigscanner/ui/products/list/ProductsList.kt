@@ -1,4 +1,4 @@
-package pl.mazak.cigscanner.ui.products
+package pl.mazak.cigscanner.ui.products.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

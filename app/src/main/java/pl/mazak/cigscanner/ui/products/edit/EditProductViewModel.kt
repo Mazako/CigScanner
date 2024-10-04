@@ -1,6 +1,5 @@
-package pl.mazak.cigscanner.ui.products
+package pl.mazak.cigscanner.ui.products.edit
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +8,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import pl.mazak.cigscanner.data.ProductsRepository
+import pl.mazak.cigscanner.ui.products.ProductUiState
+import pl.mazak.cigscanner.ui.products.toUiState
 
 object EditProductCodeSingleton{
     var CODE: String? = null

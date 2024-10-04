@@ -1,13 +1,10 @@
-package pl.mazak.cigscanner.ui.products
+package pl.mazak.cigscanner.ui.products.add
 
-import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -16,6 +13,7 @@ import pl.mazak.cigscanner.R
 import pl.mazak.cigscanner.ui.AppViewModelProvider
 import pl.mazak.cigscanner.ui.CigScannerTopBar
 import pl.mazak.cigscanner.ui.navigation.BasicRoute
+import pl.mazak.cigscanner.ui.products.ProductPanel
 
 object AddProductRoute : BasicRoute {
     override val route: String = "addProduct"

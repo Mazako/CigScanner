@@ -1,4 +1,4 @@
-package pl.mazak.cigscanner.ui.products
+package pl.mazak.cigscanner.ui.products.add
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import pl.mazak.cigscanner.data.ProductsRepository
+import pl.mazak.cigscanner.ui.products.ProductUiState
 
 object AddProductCodeSingleton {
     var CODE: String? = null

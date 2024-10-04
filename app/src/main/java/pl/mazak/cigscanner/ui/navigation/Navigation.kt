@@ -1,7 +1,5 @@
 package pl.mazak.cigscanner.ui.navigation
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -13,14 +11,14 @@ import pl.mazak.cigscanner.ui.camera.CameraBarcodeReader
 import pl.mazak.cigscanner.ui.camera.CameraBarcodeReaderRoute
 import pl.mazak.cigscanner.ui.mainMenu.MainMenu
 import pl.mazak.cigscanner.ui.mainMenu.MainMenuRoute
-import pl.mazak.cigscanner.ui.products.AddProductCodeSingleton
-import pl.mazak.cigscanner.ui.products.AddProductPanel
-import pl.mazak.cigscanner.ui.products.AddProductRoute
-import pl.mazak.cigscanner.ui.products.EditProductCodeSingleton
-import pl.mazak.cigscanner.ui.products.EditProductPanel
-import pl.mazak.cigscanner.ui.products.EditProductRoute
-import pl.mazak.cigscanner.ui.products.ProductsList
-import pl.mazak.cigscanner.ui.products.ProductsListRoute
+import pl.mazak.cigscanner.ui.products.add.AddProductCodeSingleton
+import pl.mazak.cigscanner.ui.products.add.AddProductPanel
+import pl.mazak.cigscanner.ui.products.add.AddProductRoute
+import pl.mazak.cigscanner.ui.products.edit.EditProductCodeSingleton
+import pl.mazak.cigscanner.ui.products.edit.EditProductPanel
+import pl.mazak.cigscanner.ui.products.edit.EditProductRoute
+import pl.mazak.cigscanner.ui.products.list.ProductsList
+import pl.mazak.cigscanner.ui.products.list.ProductsListRoute
 
 @Composable
 fun CigScannerNavHost(navController: NavHostController, modifier: Modifier = Modifier) {

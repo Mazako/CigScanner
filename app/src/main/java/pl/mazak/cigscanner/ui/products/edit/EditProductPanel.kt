@@ -1,4 +1,4 @@
-package pl.mazak.cigscanner.ui.products
+package pl.mazak.cigscanner.ui.products.edit
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -13,6 +13,7 @@ import pl.mazak.cigscanner.R
 import pl.mazak.cigscanner.ui.AppViewModelProvider
 import pl.mazak.cigscanner.ui.CigScannerTopBar
 import pl.mazak.cigscanner.ui.navigation.BasicRoute
+import pl.mazak.cigscanner.ui.products.ProductPanel
 
 object EditProductRoute : BasicRoute {
     override val route: String = "editProduct"
