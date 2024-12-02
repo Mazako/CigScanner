@@ -1,15 +1,21 @@
 package pl.mazak.cigscanner.ui.currency
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import okio.IOException
+import pl.mazak.cigscanner.data.api.NbpApiService
 import pl.mazak.cigscanner.data.db.currency.Currency
 import pl.mazak.cigscanner.data.db.currency.CurrencyRepository
 
-class CurrencyPanelViewModel(private val currencyRepository: CurrencyRepository) : ViewModel() {
+class CurrencyPanelViewModel(
+    private val currencyRepository: CurrencyRepository,
+    private val nbpApiService: NbpApiService
+) : ViewModel() {
 
     var currencyUiState by mutableStateOf(CurrencyUiState())
         private set
@@ -35,6 +41,10 @@ class CurrencyPanelViewModel(private val currencyRepository: CurrencyRepository)
         currencyUiState = currencyUiState.copy(crown = value, crownValid = isCurrencyValid(value))
     }
 
+    fun dismissAlert() {
+        currencyUiState = currencyUiState.copy(showRequestFailureAlert = false)
+    }
+
     suspend fun update() {
         if (!currencyUiState.eurValid || !currencyUiState.crownValid) {
             return
@@ -55,13 +65,26 @@ class CurrencyPanelViewModel(private val currencyRepository: CurrencyRepository)
         }
     }
 
+    fun fetchCurrencyFromWeb() {
+        viewModelScope.launch {
+            try {
+                val eur = nbpApiService.getEuroCourse().rates.first().mid.toString()
+                val crown = nbpApiService.getCzechCrownCourse().rates.first().mid.toString()
+                currencyUiState = currencyUiState.copy(eur = eur, crown = crown, eurValid = true, crownValid = true)
+            } catch (e: IOException) {
+                currencyUiState = currencyUiState.copy(showRequestFailureAlert = true)
+            }
+        }
+    }
+
 }
 
 data class CurrencyUiState(
     val eur: String = "",
     val eurValid: Boolean = false,
     val crown: String = "",
-    val crownValid: Boolean = false
+    val crownValid: Boolean = false,
+    val showRequestFailureAlert: Boolean = false,
 ) {
     fun toCurrency(): Currency {
         return Currency(id = 1, euro = eur.toDouble(), czechCrown = crown.toDouble())

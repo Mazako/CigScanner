@@ -1,5 +1,6 @@
 package pl.mazak.cigscanner.ui
 
+import androidx.compose.runtime.internal.composableLambdaInstance
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -36,7 +37,8 @@ object AppViewModelProvider {
 
         initializer {
             CurrencyPanelViewModel(
-                cigScannerApplication().container.currencyRepository
+                cigScannerApplication().container.currencyRepository,
+                cigScannerApplication().container.nbpApiService
             )
         }
 

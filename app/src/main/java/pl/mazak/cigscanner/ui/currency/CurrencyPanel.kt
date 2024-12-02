@@ -11,10 +11,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -62,6 +69,8 @@ fun CurrencyPanel(
         CurrencyColumn(
             eur = uiState.eur,
             eurValid = uiState.eurValid,
+            showRequestFailureAlert = uiState.showRequestFailureAlert,
+            onAlertDismiss = { viewModel.dismissAlert() },
             crown = uiState.crown,
             crownValid = uiState.crownValid,
             onEurChange = { viewModel.updateEur(it) },
@@ -73,6 +82,7 @@ fun CurrencyPanel(
                 }
             },
             innerPadding = innerPadding,
+            onFetchApi = { viewModel.fetchCurrencyFromWeb() }
         )
     }
 }
@@ -81,6 +91,9 @@ fun CurrencyPanel(
 fun CurrencyColumn(
     eur: String,
     eurValid: Boolean,
+    showRequestFailureAlert: Boolean,
+    onAlertDismiss: () -> Unit,
+    onFetchApi: () -> Unit,
     crown: String,
     crownValid: Boolean,
     onEurChange: (String) -> Unit,
@@ -128,13 +141,44 @@ fun CurrencyColumn(
         )
         Spacer(Modifier.size(40.dp))
         Button(
+            onClick = onFetchApi,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Pobierz kursy z internetu")
+        }
+        Button(
             onClick = onSave,
             modifier = Modifier.fillMaxWidth(),
             enabled = eurValid && crownValid
         ) {
             Text("Zapisz")
         }
-
+        if (showRequestFailureAlert) {
+            AlertDialog(
+                icon = {
+                    Icons.Default.Clear
+                },
+                title = {
+                    Text(text = "Wystąpił błąd")
+                },
+                text = {
+                    Text(text = "Sprawdź połaczenie z internetem i spróbuj ponownie")
+                },
+                onDismissRequest = {
+                    onAlertDismiss()
+                },
+                confirmButton = {},
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            onAlertDismiss()
+                        }
+                    ) {
+                        Text("Ok")
+                    }
+                }
+            )
+        }
     }
 
 }
@@ -151,7 +195,10 @@ fun CurrencyPanelPreview() {
             onSave = {},
             innerPadding = PaddingValues(12.dp),
             eurValid = true,
-            crownValid = true
+            crownValid = true,
+            showRequestFailureAlert = false,
+            onAlertDismiss = {},
+            onFetchApi = {}
         )
     }
 }

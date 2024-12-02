@@ -2,21 +2,31 @@ package pl.mazak.cigscanner.ui.camera
 
 import android.Manifest
 import android.app.Activity
+import android.graphics.Bitmap
+import android.util.Log
 import androidx.annotation.OptIn
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
+import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -29,6 +39,9 @@ import com.google.mlkit.vision.common.InputImage
 import pl.mazak.cigscanner.R
 import pl.mazak.cigscanner.ui.navigation.BasicRoute
 import java.util.concurrent.Executors
+import kotlin.math.log
+
+private const val barcodeAreaSize: Float = 200f
 
 object CameraBarcodeReaderRoute : BasicRoute {
     override val route: String = "cam"
@@ -71,14 +84,18 @@ fun CameraBarcodeReader(
             modifier = Modifier.fillMaxSize()
         )
 //          TODO: WYPIERDOL JAK UZNASZ ZE NIEPOTRZEBNE!!!
-//        Canvas(modifier = Modifier.fillMaxSize()) {
-//
-//            drawRect(
-//                color = Color.Blue,
-//                size = Size(500f, 100f),
-//                topLeft = Offset(300f, 500f)
-//            )
-//        }
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val barcodeAreaSizeCanvas = (size.height * barcodeAreaSize) / 640f
+            drawRect(
+                color = Color.Red,
+                style = Stroke(4f),
+                size = Size(barcodeAreaSizeCanvas, barcodeAreaSizeCanvas),
+                topLeft = Offset(
+                    x = (size.width / 2) - (barcodeAreaSizeCanvas / 2),
+                    y = (size.height / 2) - (barcodeAreaSizeCanvas / 2)
+                )
+            )
+        }
     }
     DisposableEffect(Unit) {
         onDispose {
@@ -102,6 +119,7 @@ fun bindPreview(
         .build()
 
     val imageAnalysis = ImageAnalysis.Builder()
+        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
         .build()
         .also { imageAnalysis ->
             imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor()) {
@@ -125,11 +143,16 @@ fun analyzeImage(image: ImageProxy, imageProcessedCallback: (String) -> Unit) {
         .build()
 
     val client = BarcodeScanning.getClient(options)
-    val image1 = image.image
 
-    if (image1 != null) {
+    if (image.image != null) {
+        val bitmap = Bitmap.createBitmap(image.toBitmap(),
+            (image.width - barcodeAreaSize).toInt() / 2,
+            (image.height - barcodeAreaSize).toInt() / 2,
+            barcodeAreaSize.toInt(),
+            barcodeAreaSize.toInt())
+
         client.process(
-            InputImage.fromMediaImage(image1, image.imageInfo.rotationDegrees)
+            InputImage.fromBitmap(bitmap, image.imageInfo.rotationDegrees)
         ).addOnSuccessListener { barcodes ->
             barcodes.forEach { barcode ->
                 run {
